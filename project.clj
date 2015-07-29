@@ -1,4 +1,4 @@
-(defproject notion "0.1.0-SNAPSHOT"
+(defproject notion "0.1.1"
   :description "A helper library for statistical machine learning."
   :url "https://github.com/mattrepl/notion"
   :license {:name "Eclipse Public License"
