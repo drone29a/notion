@@ -1,5 +1,13 @@
 (ns notion.metric
-  (:require [clojure.core.matrix :as mx]))
+  (:require [clojure.core.matrix :as mx]
+            [clojure.core.typed :as t]
+            [munge.matrix :as mmx]))
+
+(defn cos-sim
+  "Compute the cosine similarity between two vectors."
+  [u v]
+  (/ (mx/dot u v)
+     (* (mmx/l2-norm u) (mmx/l2-norm v))))
 
 (defn kl-cat
   "KL divergence for categorical distribution.
