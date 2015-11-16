@@ -1,5 +1,7 @@
 (ns notion.stat
-  "Stat functions taken from: https://gist.github.com/scottdw/2960070")
+  "Stat functions taken from: https://gist.github.com/scottdw/2960070"
+  (:require [clojure.core.typed :as t]
+            [clojure.core.matrix :as mx]))
  
 (defn mode [vs]
   (let [fs (frequencies vs)]
@@ -132,3 +134,7 @@
         (if (= mns pmns)
           mns
           (recur (sort (map mean (vals (group-by (closest-mean-fn mns) vs)))) mns))))))
+
+(t/defn correlation
+  []
+  nil)
