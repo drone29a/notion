@@ -6,7 +6,8 @@
 (defn mode [vs]
   (let [fs (frequencies vs)]
     (first (last (sort-by second fs)))))
- 
+
+;; TODO: rename this, is actually percentile
 (defn quantile
   ([p vs]
      (let [svs (sort vs)]
@@ -101,6 +102,7 @@
   (defn summarize
     ([vs] (summarize "" vs))
     ([label vs]
+     (let [stats-map-result (stats-map vs)]
        (apply format
               (str (reduce #(.append %1 %2)
                            (StringBuilder.)
@@ -112,6 +114,7 @@
                                        "Mode: %7$.3f"
                                        "Min: %3$.3f"
                                        "LAV: %13$.3f"
+                                       "LAV: %s"
                                        "Q1: %8$.3f"
                                        "Median: %6$.3f"
                                        "Q3: %9$.3f"
@@ -119,7 +122,7 @@
                                        "Max: %4$.3f"
                                        "SD: %11$.3f"
                                        "MAD: %12$.3f"])))
-              (conj (map (comp double (stats-map vs)) ks) label)))))
+              (conj (map (comp double #(or % Double/NaN) stats-map-result) ks) label))))))
  
 (defn closest-mean-fn [means]
   (fn [v] (reduce (partial min-key #(Math/pow (- v %) 2)) means)))
