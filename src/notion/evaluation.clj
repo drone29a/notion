@@ -1,7 +1,11 @@
 (ns notion.evaluation
   "Methods for evaluating clustering performance."
-  (:require [clojure.math.combinatorics :as combo])
-  (:use [clojure.set :only [difference intersection union]]))
+  (:require [clojure.core.typed :as t] 
+            [clojure.math.combinatorics :as combo]
+            [clojure.core.matrix :as mx]
+            [munge.type :as mt])
+  (:use [clojure.set :only [difference intersection union]])
+  (:import [mikera.arrayz INDArray]))
 
 (defn max-index [x]
   (.indexOf (vec x) (apply max x)))
@@ -91,3 +95,13 @@
         b (set b)]
     (/ (float (count (intersection a b))) 
        (count (union a b)))))
+
+(t/defn rmse
+  "Calculate root-mean square error (RMSE) for two equal-length sequences of numbers."
+  [xs :- (t/Seq Num)
+   ys :- (t/Seq Num)] :- t/Num
+  {:pre [(= (count xs) (count ys))]}
+  (let [n (count xs)]
+    (Math/sqrt (/ (->> (map (comp #(Math/pow % 2) -) xs ys)
+                       (reduce +))
+                  n))))
