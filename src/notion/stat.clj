@@ -29,7 +29,7 @@
 
 (defn mean
   ([vs] (mean (reduce + vs) (count vs)))
-  ([sm sz] (/ sm sz)))
+  ([sm sz] (float (/ sm sz))))
 
 (defn standard-deviation
   ([vs]
